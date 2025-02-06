@@ -46,6 +46,31 @@ kubectl apply -f kubernetes/prometheus_grafana.yaml
 ## Troubleshooting
 Refer to the [Troubleshooting Guide](docs/troubleshooting.md) for common issues and solutions.
 
-## License
-This project is licensed under the MIT License.
+## File Structure
+
+AWSHPC/
+│── infrastructure/            # Infrastructure as Code (Terraform & ParallelCluster)
+│   ├── parallelcluster.yaml  # AWS ParallelCluster configuration
+│   ├── eks_cluster.tf        # Terraform script to create an EKS cluster
+│   ├── fsx_lustre.tf         # Terraform script for FSx for Lustre
+│   ├── vpc.tf                # Terraform script for networking setup
+│── kubernetes/               # Kubernetes manifests for ML workloads
+│   ├── jupyter.yaml          # JupyterHub deployment on EKS
+│   ├── tensorflow_gpu.yaml   # TensorFlow workload with GPU support
+│   ├── prometheus_grafana.yaml # Monitoring setup using Prometheus & Grafana
+│── scripts/                  # Helper scripts for automation & monitoring
+│   ├── monitor_cluster.sh    # Script to check cluster health
+│   ├── check_slurm_status.sh # Slurm job monitoring script
+│── notebooks/                # Jupyter notebooks for benchmarking & ML experiments
+│   ├── tensorflow_benchmark.ipynb # Benchmarking TensorFlow performance
+│── docs/                     # Documentation for setup, troubleshooting, and performance tuning
+│   ├── setup_guide.md        # Step-by-step deployment guide
+│   ├── troubleshooting.md    # Common issues & solutions
+│   ├── performance_testing.md # Performance optimization tips
+│── .github/                   # GitHub-specific configurations (e.g., workflows)
+│   ├── workflows/ci-cd.yaml  # CI/CD pipeline for infrastructure automation
+│── README.md                 # Project overview and setup instructions
+│── LICENSE                   # Open-source license file
+│── .gitignore                # Git ignore file for unnecessary files
+
 
