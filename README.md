@@ -72,7 +72,7 @@ kubectl apply -f kubernetes/prometheus_grafana.yaml
 ## **Next Steps**
 ✅ Deploy and test the cluster  
 ✅ Document any issues and improvements  
-✅ Record a demo video for portfolio showcase  
+✅ Demo video for portfolio?
 
 ---
 This repository serves as a **complete AWS HPC cluster management project**, demonstrating expertise in **AWS, HPC, Kubernetes, ML workloads, and system troubleshooting**. 🚀
