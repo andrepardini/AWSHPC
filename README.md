@@ -25,7 +25,8 @@ AWSHPC/
 │   ├── performance_testing.md # GPU & filesystem performance tests
 ```
 
-**AWS Environment Setup**
+### **AWS Environment Setup**
+
 Before deployment, set up the necessary AWS infrastructure.
 
 Prerequisites
