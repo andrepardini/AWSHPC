@@ -48,7 +48,9 @@ Refer to the [Troubleshooting Guide](docs/troubleshooting.md) for common issues 
 
 ## File Structure
 
-AWSHPC/
+The repository will have the following structure to ensure a well-organized AWS HPC (AWSHPC) project:
+
+```AWSHPC/
 │── infrastructure/            # Infrastructure as Code (Terraform & ParallelCluster)
 │   ├── parallelcluster.yaml  # AWS ParallelCluster configuration
 │   ├── eks_cluster.tf        # Terraform script to create an EKS cluster
@@ -72,5 +74,4 @@ AWSHPC/
 │── README.md                 # Project overview and setup instructions
 │── LICENSE                   # Open-source license file
 │── .gitignore                # Git ignore file for unnecessary files
-
-
+ ```
