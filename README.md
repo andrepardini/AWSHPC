@@ -5,7 +5,7 @@ This repository contains all necessary scripts, configurations, and documentatio
 
 ### **Directory Structure**
 ```
-aws_hpc_cluster/
+AWSHPC/
 │── infrastructure/            # Terraform/CloudFormation scripts for AWS resources
 │   ├── parallelcluster.yaml  # ParallelCluster config
 │   ├── eks_cluster.tf        # EKS cluster setup
