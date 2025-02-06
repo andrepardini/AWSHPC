@@ -1,0 +1,31 @@
+HeadNode:
+  InstanceType: c5n.18xlarge
+  Networking:
+    SubnetId: subnet-xxxxxxxx
+  Ssh:
+    KeyName: my-key-pair
+  LocalStorage:
+    RootVolume:
+      Size: 100
+
+Scheduling:
+  Scheduler: slurm
+  SlurmQueues:
+    - Name: compute
+      ComputeResources:
+        - Name: gpu-nodes
+          InstanceType: p4d.24xlarge
+          MinCount: 0
+          MaxCount: 4
+      Networking:
+        SubnetIds:
+          - subnet-xxxxxxxx
+      ComputeSettings:
+        LocalStorage:
+          RootVolume:
+            Size: 200
+
+SharedStorage:
+  - Name: lustre
+    StorageType: FsxLustre
+    MountDir: /fsx
