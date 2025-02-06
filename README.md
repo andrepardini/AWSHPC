@@ -25,15 +25,21 @@ AWSHPC/
 │   ├── performance_testing.md # GPU & filesystem performance tests
 ```
 
-AWS Environment Setup
+**AWS Environment Setup**
 Before deployment, set up the necessary AWS infrastructure.
 
 Prerequisites
+
 ✅ AWS Account
+
 ✅ IAM Permissions – Administrator or a role with EC2, S3, EKS, FSx, CloudFormation, and CloudWatch access
+
 ✅ AWS CLI Installed
+
 ✅ ParallelCluster CLI Installed (pip install aws-parallelcluster)
+
 ✅ kubectl Installed (for Kubernetes management)
+
 ✅ Docker Installed (if building custom container images)
 
 ---
