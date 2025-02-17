@@ -20,7 +20,7 @@ AWSHPC consists of the following core components:
 ## Deployment
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/AWSHPC.git
+   git clone https://github.com/andrepardini/AWSHPC.git
    cd AWSHPC
    ```
 2. Deploy AWS ParallelCluster:
