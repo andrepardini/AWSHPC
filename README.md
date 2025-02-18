@@ -48,7 +48,7 @@ License information. TBD
 
 ## File Structure
 
-The repository will have the following structure to ensure a well-organized AWS HPC (AWSHPC) project:
+The repository will have the following structure to ensure the project stayswell-organized:
 
 ```AWSHPC/
 ├── cluster-deployment/           # AWS ParallelCluster configuration
