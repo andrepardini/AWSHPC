@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter
+  template:
+    metadata:
+      labels:
+        app: jupyter
+    spec:
+      containers:
+      - name: jupyter
+        image: jupyter/tensorflow-notebook:latest  # Or your preferred image
+        ports:
+        - containerPort: 8888
+        resources:
+          limits:
+            nvidia.com/gpu: 1  # Request 1 GPU
+        volumeMounts:
+        - name: data-volume
+          mountPath: /home/jovyan/data
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: data-pvc # A PersistentVolumeClaim

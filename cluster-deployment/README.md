@@ -1,0 +1,1 @@
+Important: Replace placeholders like ami-xxxxxxxxxxxxx, your-key-pair, subnet-xxxxxxxxxxxxx, fs-xxxxxxxxxxxxx, and s3://your-bucket/... with your actual values.

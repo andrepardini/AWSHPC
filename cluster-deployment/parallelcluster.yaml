@@ -1,0 +1,40 @@
+Region: us-east-1
+Image: ami-xxxxxxxxxxxxx
+KeyName: your-key-pair
+Scheduling:
+  Scheduler: slurm
+  SlurmQueues:
+    - Name: gpu
+      Networking:
+        SubnetId: subnet-xxxxxxxxxxxxx
+      ComputeResources:
+        - Name: gpu-cr
+          InstanceType: p4d.24xlarge
+          MinCount: 0
+          MaxCount: 4
+      Gpu:
+        Enabled: true
+      CustomActions:
+        OnNodeConfigured:
+          Script: s3://your-bucket/scripts/configure_gpu.sh
+
+SharedStorage:
+  - Name: fsx
+    MountDir: /fsx
+    StorageType: FsxLustre
+    FsxLustreSettings:
+      FileSystemId: fs-xxxxxxxxxxxxx  # Replace with actual FSx ID
+
+HeadNode:
+  InstanceType: m5.xlarge
+  Networking:
+    SubnetId: subnet-xxxxxxxxxxxxx
+  Ssh:
+    KeyName: your-key-pair
+  CustomActions:
+    OnNodeConfigured:
+      Script: s3://your-bucket/scripts/setup_headnode.sh
+
+Networking:
+  ElasticIp: 'NONE'
+  SubnetId: subnet-xxxxxxxxxxxxx
