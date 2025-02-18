@@ -13,7 +13,7 @@ This project demonstrates the setup, management, and support of a High-Performan
 *   **Amazon FSx for Lustre / Ceph / BeeGFS:**  Offers parallel file storage.
 *   **Jupyter Notebook:** Enables interactive ML workload execution.
 *   **Prometheus & Grafana:** Monitors cluster performance.
-*   **AWS CloudWatch Logs:** Aids in troubleshooting and diagnostics.
+*   **AWS CloudWatch Logs:** Aids in troubleshooting and diagnostics..
 
 ## Project Structure
 
