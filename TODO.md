@@ -36,9 +36,26 @@ Ceph
 
 - [ ] Storage readme file
 
-
 ML-workloads TBD
 
 - [ ]
 
 Monitoring TBD
+
+Cloudwatch
+- [x] Create readme
+- [x] Create cloudwatch_agent.json
+- [ ] test cloudwatch_agent.json and update readme if needed
+
+diagnostic_scripts
+- [ ] check_network.sh
+- [ ] check_node_health.sh
+
+grafana
+- [ ] Create hpc-dashboard.json
+- [ ] Create prometheus.yaml datasource
+- [ ] grafana readme.md
+
+prometheus
+- [ ] Create prometheus.yaml for prometheus
+- [ ] create service-monitor.yaml
