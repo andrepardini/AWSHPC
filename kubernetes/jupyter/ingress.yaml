@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jupyter-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx  # Replace with your ingress controller
+    nginx.ingress.kubernetes.io/rewrite-target: /  # Add if needed by your ingress controller
+spec:
+  rules:
+  - host: jupyter.example.com  # Replace with your domain or subdomain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix # or Exact if necessary
+        backend:
+          service:
+            name: jupyter-service
+            port:
+              number: 80

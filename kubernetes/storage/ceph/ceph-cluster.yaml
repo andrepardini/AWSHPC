@@ -1,0 +1,61 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: ceph-cluster
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v17.2.6-pacific  # Replace with your desired Ceph version
+    allowUnsupported: false
+  dataDirHostPath: /var/lib/rook  # Host path for storing Ceph data
+  mon:
+    count: 3
+    allowMultiplePerNode: true # only for testing purpose, avoid in prod
+  network:
+    hostNetwork: false # Consider "true" for better performance but might require careful planning
+  storage:
+    useAllNodes: false   # Set to false to control the OSDs deployment on specific nodes
+    nodes:
+    - name: worker-node-1 # Replace with your worker node name
+      deviceFilters:
+      - /dev/sdb  # Replace with desired block device
+    - name: worker-node-2 # Replace with your worker node name
+      deviceFilters:
+      - /dev/sdb # Replace with desired block device
+  dashboard:
+    enabled: true
+  monitoring:
+    enabled: true
+  crashCollector:
+    enabled: true
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: rook-ceph-block
+provisioner: ceph.rook.io/block
+parameters:
+  clusterID: rook-ceph  # Namespace:Name of the Rook cluster
+  pool: ceph-blockpool
+  imageFormat: "2"
+  imageFeatures: layering
+  csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+  csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+  csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+  csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+  csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+  csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+reclaimPolicy: Delete
+
+---
+
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: ceph-blockpool
+  namespace: rook-ceph
+spec:
+  failureDomain: host
+  replicated:
+    size: 3 # A size of three means that each object in the pool has three copies across the cluster

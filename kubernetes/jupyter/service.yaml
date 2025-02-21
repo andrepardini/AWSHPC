@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyter-service
+spec:
+  selector:
+    app: jupyter
+  ports:
+    - protocol: TCP
+      port: 80  # Service port
+      targetPort: 8888 # Container port
+  type: ClusterIP # Use NodePort if you want to access it directly via node IP

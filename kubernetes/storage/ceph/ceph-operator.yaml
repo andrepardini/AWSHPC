@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rook-ceph-operator
+  namespace: rook-ceph
+  labels:
+    app: rook-ceph-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rook-ceph-operator
+  template:
+    metadata:
+      labels:
+        app: rook-ceph-operator
+    spec:
+      serviceAccountName: rook-ceph-operator
+      containers:
+      - name: rook-ceph-operator
+        image: rook/ceph:v1.12.7 # Replace with your desired Rook Ceph version
+        command:
+        - ceph
+        - operator
+        - start
+        env:
+        - name: ROOK_CEPH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        resources:
+          requests:
+            cpu: 1
+            memory: 2Gi
+          limits:
+            cpu: 2
+            memory: 4Gi

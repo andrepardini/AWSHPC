@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: DaemonSet # Use a DaemonSet to deploy the client on all nodes
+metadata:
+  name: beegfs-client
+  labels:
+    app: beegfs-client
+spec:
+  selector:
+    matchLabels:
+      app: beegfs-client
+  template:
+    metadata:
+      labels:
+        app: beegfs-client
+    spec:
+      hostNetwork: true  # Required for BeeGFS client to access the network
+      containers:
+      - name: beegfs-client
+        image: fhgfs/beegfs-client:2023.01 # Replace with your BeeGFS client image and version
+        securityContext:
+          privileged: true # Required to load kernel modules
+        env:
+        - name: BEEGFS_CONFDIR
+          value: /etc/beegfs  # Configuration directory
+        volumeMounts:
+        - name: beegfs-config
+          mountPath: /etc/beegfs
+        - name: host-dev
+          mountPath: /dev
+        - name: host-modules
+          mountPath: /lib/modules/${NODE_KERNEL_VERSION}
+          readOnly: true
+        - name: beegfs-mount
+          mountPath: /mnt/beegfs # Where BeeGFS will be mounted on the host
+        # Lifecycle hook to load kernel modules
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "modprobe beegfs; modprobe beegfs_mnt"]
+      volumes:
+      - name: beegfs-config
+        configMap:
+          name: beegfs-client-config  # ConfigMap containing beegfs-client.conf
+      - name: host-dev
+        hostPath:
+          path: /dev
+      - name: host-modules
+        hostPath:
+          path: /lib/modules
+      - name: beegfs-mount
+        hostPath:
+          path: /mnt/beegfs # This directory must exist on the host nodes
+      initContainers:
+      - name: kernel-version
+        image: alpine/git
+        imagePullPolicy: IfNotPresent
+        command: ['sh', '-c', 'echo $(uname -r) > /kernel-version/version']
+        volumeMounts:
+          - name: kernel-version
+            mountPath: /kernel-version
+      - name: install-modules
+        image: alpine/git
+        securityContext:
+          privileged: true
+        command: ["/bin/sh", "-c", "apk update && apk add --no-cache openrc eudev linux-headers curl build-base && curl -s https://raw.githubusercontent.com/thradec/beegfs-k8s/master/kernel-module-build/build.sh | sh"]
+        env:
+        - name: NODE_KERNEL_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        volumeMounts:
+        - name: host-modules
+          mountPath: /lib/modules
+        - name: kernel-version
+          mountPath: /kernel-version
+  updateStrategy:
+    type: RollingUpdate

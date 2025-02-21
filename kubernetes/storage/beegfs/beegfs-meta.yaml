@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: beegfs-meta
+spec:
+  selector:
+    matchLabels:
+      app: beegfs-meta
+  serviceName: beegfs-meta
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: beegfs-meta
+    spec:
+      containers:
+      - name: beegfs-meta
+        image: fhgfs/beegfs-storage:2023.01  # Replace with your BeeGFS storage image and version
+        ports:
+        - containerPort: 8008  # Example port (adjust as needed)
+        env:
+        - name: BEEGFS_CONFDIR
+          value: /etc/beegfs
+        volumeMounts:
+        - name: beegfs-meta-storage
+          mountPath: /data  # Where BeeGFS metadata will be stored
+        - name: beegfs-config
+          mountPath: /etc/beegfs
+        resources:
+          requests:
+            cpu: "2"
+            memory: "4Gi"
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "beegfs-setup-meta --config=/etc/beegfs/beegfs-storage.conf -p /data"] #This must be changed!
+      volumes:
+      - name: beegfs-config
+        configMap:
+          name: beegfs-storage-config  # ConfigMap containing beegfs-storage.conf
+      - name: beegfs-meta-storage # Volume where beegfs metadata will be stored
+        persistentVolumeClaim:
+          claimName: beegfs-meta-pvc
+
+  volumeClaimTemplates:
+  - metadata:
+      name: beegfs-meta-pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 100Gi  # Adjust size as needed
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: beegfs-meta
+spec:
+  selector:
+    app: beegfs-meta
+  ports:
+  - port: 8008
+    name: beegfs-port
+    targetPort: 8008
+  type: ClusterIP

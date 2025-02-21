@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-worker
+spec:
+  replicas: 3  # Adjust the number of worker nodes as needed
+  selector:
+    matchLabels:
+      app: spark-worker
+  template:
+    metadata:
+      labels:
+        app: spark-worker
+    spec:
+      containers:
+      - name: spark-worker
+        image: bde2020/spark-worker:3.3.0-hadoop3.2
+        ports:
+        - containerPort: 8081  # Spark worker UI port
+        env:
+        - name: SPARK_MASTER_URL
+          value: "spark://spark-master:7077"  # URL to the spark master
+        resources:
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+        #volumeMounts:          # Uncomment if you need to mount persistent storage for the workers
+        #- name: data-volume   # Make sure to define it also as shown in the jupyter pod
+        #  mountPath: /data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-worker
+spec:
+  selector:
+    app: spark-worker
+  ports:
+  - port: 8081
+    name: webui-port
+    targetPort: 8081
+  type: ClusterIP

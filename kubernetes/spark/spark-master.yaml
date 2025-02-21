@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-master
+  template:
+    metadata:
+      labels:
+        app: spark-master
+    spec:
+      containers:
+      - name: spark-master
+        image: bde2020/spark-master:3.3.0-hadoop3.2
+        ports:
+        - containerPort: 7077  # Spark master port
+        - containerPort: 8080  # Spark master UI port
+        env:
+        - name: SPARK_MASTER_HOST
+          value: spark-master
+        resources:
+          requests:
+            cpu: "2"
+            memory: "4Gi"
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-master
+spec:
+  selector:
+    app: spark-master
+  ports:
+  - port: 7077
+    name: spark-port
+    targetPort: 7077
+  - port: 8080
+    name: webui-port
+    targetPort: 8080
+  type: ClusterIP
