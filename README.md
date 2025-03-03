@@ -44,7 +44,7 @@ TBD
 
 ## License
 
-License information. TBD
+License information TBD
 
 ## File Structure
 
