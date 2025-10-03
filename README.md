@@ -9,7 +9,6 @@ This project demonstrates the setup, management, and support of a High-Performan
 *   **AWS ParallelCluster:**  Provisions and manages the HPC cluster.
 *   **EKS (Kubernetes):** Deploys and manages containerized ML workloads.
 *   **NVIDIA GPUs (AWS p4d instances):** Accelerates AI/ML tasks.
-*   **InfiniBand Networking:** Provides high-speed interconnectivity.
 *   **Amazon FSx for Lustre / Ceph / BeeGFS:**  Offers parallel file storage.
 *   **Jupyter Notebook:** Enables interactive ML workload execution.
 *   **Prometheus & Grafana:** Monitors cluster performance.
